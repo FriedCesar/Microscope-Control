@@ -9,14 +9,13 @@
 // This program is a heritage from Calibration MMS
 // Program designed to be connected with an ARDUINO MEGA
 // Designed to be connected with a Sony DSC-QX10 camera (It uses the Sony's Remote Camera API SDK; small changes can be implemented to extend range)
-// 
+// As it's predecessor, Option to connect a remote ID shutter is left
 // 
 // Notes:
 //          Camera MUST be connected to PC before attempting to connect to the program (This program lacks a discovery device method for the camera)
 //          Version still as a prototype, Be careful not to overload the programm with orders (Be gentle)
 //          Bugs might be present, this program has not been thoughtfully tested
 //          This program is designed to work altogether with an ARDUINO board, thus, the ARDUINO code for the used board is necessary
-//          Unlike the predecessor, no IR shutter is anabled (YET)
 //
 //
 // Camera Remote API by Sony
