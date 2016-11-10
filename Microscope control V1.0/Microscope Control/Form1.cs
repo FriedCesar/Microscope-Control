@@ -379,7 +379,12 @@ namespace Microscope_Control
 
         private void TestBtn_Click(object sender, EventArgs e)                              // Test Button (Not available) <INSERT YOUR TEST CODE HERE>
         {
-            BStateLbl.Text = RxString;
+
+            LiveviewTmr.Enabled = false;
+
+            BConnectBtn.Enabled = true;
+
+            //BStateLbl.Text = RxString;
 
             //*******************
 
@@ -1036,6 +1041,12 @@ namespace Microscope_Control
 
         private void TakePictue()
         {
+            bool lvwtmr = false;
+            if (LiveviewTmr.Enabled)
+            {
+                lvwtmr = true;
+                LiveviewTmr.Enabled = false;
+            }
             CamResponse = SendRequest("actTakePicture", "");
             string imgURL = CamResponse.Substring(20).Split('\"').FirstOrDefault();
             string TempPath = (pathSave + "\\Frame" + myFrame.ToString("D4") + "\\" + ("S") + BitConverter.ToString(session) + ("F") + myFrame.ToString("D4") + ("P") + myImg.ToString("D4") + ".jpg"); ;
@@ -1044,18 +1055,21 @@ namespace Microscope_Control
             imageClient.DownloadFile(imgURL, TempPath);
             //ImgAux.Image = Image.FromFile("C:\\Users\\TOSHIBA\\Documents\\Archivos doctorado\\2016-2\\Programming\\Microscope Control\\Microscope control V1.0\\microscope.gif");
             //ImgAux.ImageLocation = imgURL;
+            if (lvwtmr == true)
+            {
+                LiveviewTmr.Enabled = true;
+            }
             onSave = true;
         }
 
         private void StartCapture()
         {
-            LiveviewTmr.Interval = 100;
             onStart = false;
             if (myFrame == 0)
             {
                 IntervalTmr.Enabled = true;
             }
-            Thread.Sleep(500);
+            //Thread.Sleep(500);
             TakePictue();
 
             if (myFrame == TotalFrames)
@@ -1096,7 +1110,6 @@ namespace Microscope_Control
                 }
                 else
                 {
-                    LiveviewTmr.Interval = 3;
                     Busy = true;
                     MoveStage(Convert.ToInt32(BStepTxt.Text) * TotalFrames, 'S');
                     onMove = false;
@@ -1119,8 +1132,9 @@ namespace Microscope_Control
             }
             else
             {
-                StartCapture();
+                SystemSounds.Hand.Play();
                 OnCapture = true;
+                StartCapture();
             }
         }
     }

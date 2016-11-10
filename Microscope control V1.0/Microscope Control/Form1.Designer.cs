@@ -356,7 +356,7 @@
             // 
             this.BTimeLbl.AutoSize = true;
             this.BTimeLbl.Enabled = false;
-            this.BTimeLbl.Location = new System.Drawing.Point(937, 293);
+            this.BTimeLbl.Location = new System.Drawing.Point(939, 352);
             this.BTimeLbl.Name = "BTimeLbl";
             this.BTimeLbl.Size = new System.Drawing.Size(30, 13);
             this.BTimeLbl.TabIndex = 50;
@@ -386,7 +386,7 @@
             // 
             this.BCycleLbl.AutoSize = true;
             this.BCycleLbl.Enabled = false;
-            this.BCycleLbl.Location = new System.Drawing.Point(937, 352);
+            this.BCycleLbl.Location = new System.Drawing.Point(938, 324);
             this.BCycleLbl.Name = "BCycleLbl";
             this.BCycleLbl.Size = new System.Drawing.Size(33, 13);
             this.BCycleLbl.TabIndex = 49;
@@ -408,7 +408,7 @@
             // 
             this.BStepLbl.AutoSize = true;
             this.BStepLbl.Enabled = false;
-            this.BStepLbl.Location = new System.Drawing.Point(937, 323);
+            this.BStepLbl.Location = new System.Drawing.Point(938, 295);
             this.BStepLbl.Name = "BStepLbl";
             this.BStepLbl.Size = new System.Drawing.Size(29, 13);
             this.BStepLbl.TabIndex = 48;
