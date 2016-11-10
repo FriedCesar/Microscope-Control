@@ -94,7 +94,7 @@ namespace Microscope_Control
             {
                 ConnectionTxt.Visible = true;
                 ConnectBtn.Enabled = false;
-                Thread.Sleep(200);
+                //Thread.Sleep(200);
 
                 // Setup Client/Host Endpoints and communication socket
                 IPEndPoint LocalEndPoint = new IPEndPoint(IPAddress.Any, 60000);                                        // Creates Endpoint to connect with system client
