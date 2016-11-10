@@ -359,6 +359,7 @@ namespace Microscope_Control
 
         private void getEventBtn_Click(object sender, EventArgs e)                          // Test Button (Not visible) Requests Events to camera
         {
+            //JSON.net
             getEventTxt.Text = "";
             CamResponse = SendRequest("getEvent", "true");                              // These are my formating steps, please do not look at them... it is actually a very bad coding
             CamResponse = CamResponse.Replace("\",\"", "\r\n\t");
@@ -670,7 +671,7 @@ namespace Microscope_Control
 
         private void reverseChkBtn_CheckedChanged(object sender, EventArgs e)
         {
-            //Busy = true;
+            Busy = true;
             if (reverseChkBtn.Checked)
             {
                 TxString = ("@" + Encoding.ASCII.GetString(session) + "R");
@@ -909,6 +910,10 @@ namespace Microscope_Control
             //BStepTBLbl.Text = ("Step: " + PosRef);
             //Pos = BStepTB.Value;
             //string posAux = Convert.ToString(Pos, 2);
+            //******************
+            //string Pos = Bitconverter.GetBytes(steps);
+            //TxString = ("@"+ Encoding.ASCII.GetString(session)+inst);
+            //TxString = TxString + pos[0]+""+pos[1]+""+pos[2]
             Pos = steps;
             string posAux = Convert.ToString(Pos, 2);
             int lendif = 21 - posAux.Length;
@@ -922,111 +927,8 @@ namespace Microscope_Control
             BStateLbl.Text = ("Moving...");
             serialPort1.WriteLine(TxString);
         }
-
-
-        //if (RxString.Contains(("@" + Encoding.ASCII.GetString(session) + "MF")))
-        //{
-        //    BStateLbl.Text = ("Ready");
-        //    Busy = false;
-        //    receivedAction = true;                                       // Libera la bandera de estado ocupado
-        //    if (Pos != PosRef)                                      // Verifica que la información de posición esté actualizada
-        //    {
-        //        BStepTBLbl.Text = ("Step: " + PosRef);
-        //        Pos = BStepTB.Value;
-        //        string posAux = Convert.ToString(Pos, 2);
-        //        int lendif = 21 - posAux.Length;
-        //        for (i = 0; i < lendif; i++)
-        //            posAux = '0' + posAux;
-        //        pos3 = new byte[] { Convert.ToByte(posAux.Substring(0, 7), 2) };
-        //        pos2 = new byte[] { Convert.ToByte(posAux.Substring(7, 7), 2) };
-        //        pos1 = new byte[] { Convert.ToByte(posAux.Substring(14, 7), 2) };
-        //        //BCycleTxt.Text = (BitConverter.ToString(pos1) + BitConverter.ToString(pos2) + BitConverter.ToString(pos3));
-        //        TxString = ("@" + Encoding.ASCII.GetString(session) + "P" + Encoding.ASCII.GetString(pos1) + Encoding.ASCII.GetString(pos2) + Encoding.ASCII.GetString(pos3));
-        //        serialPort1.WriteLine(TxString);
-        //        BStateLbl.Text = ("Moving...");
-        //        Busy = true;
-        //    }
-        //}
-
-        //if (RxString.Contains(("@" + Encoding.ASCII.GetString(session) + "IF")))
-        //{
-        //    string tempstring;
-        //    tempstring = RxString.Substring(4, RxString.Length - 4);
-        //    var temparray = tempstring.Split(',');
-        //    BStepTxt.Text = temparray[0];
-        //    BCycleTxt.Text = temparray[1];
-        //    BTimeTxt.Text = temparray[2];
-        //    receivedAction = true;
-        //    Busy = false;
-        //}
-        //if (RxString.Contains(("@" + Encoding.ASCII.GetString(session) + "OF")))
-        //{
-        //    receivedAction = true;
-        //    Busy = false;
-        //    if (OnCapture)
-        //    {
-        //        if (onStart)
-        //            StartCapture();
-        //        onMove = true;
-        //        BStateLbl.Text = (BStateLbl.Text + ("\nMove finished"));
-        //        ManageFrames();
-        //    }
-        //}
-        //if (RxString.Contains(("@" + Encoding.ASCII.GetString(session) + "SF")))
-        //{
-        //    Busy = true;
-        //    TxString = ("@" + Encoding.ASCII.GetString(session) + "O");
-        //    Pos = 0;
-        //    PosRef = 0;
-        //    BStepTB.Value = 0;
-        //    BStepTBLbl.Text = ("Step: 0");
-        //    receivedAction = true;
-        //    serialPort1.WriteLine(TxString);
-        //    //if (OnCapture)
-        //    //    ManageFrames();
-        //}
-        //if (RxString.Contains(("@" + Encoding.ASCII.GetString(session) + "QF")))
-        //{
-        //    receivedAction = true;
-        //    Busy = false;
-        //}
-        //if (RxString.Contains(("@" + Encoding.ASCII.GetString(session) + "UF")))
-        //{
-        //    receivedAction = true;
-        //    Busy = false;
-        //}
-        //if (RxString.Contains(("@" + Encoding.ASCII.GetString(session) + "WF")))
-        //{
-        //    receivedAction = true;
-        //    Busy = false;
-        //}
-        //if (RxString.Contains(("@" + Encoding.ASCII.GetString(session) + "RF")))
-        //{
-        //    receivedAction = true;
-        //    Busy = false;
-        //}
-        //if (RxString.Contains(("@" + Encoding.ASCII.GetString(session) + "FF")))
-        //{
-        //    receivedAction = true;
-        //    Busy = false;
-        //}
-        //if (RxString.Contains(("@" + Encoding.ASCII.GetString(session) + "VF")))
-        //{
-        //    receivedAction = true;
-        //    Busy = false;
-        //    if (onStart)
-        //        CreateFolders();
-        //}
-        //if (!receivedAction)
-        //{
-        //    serialPort1.WriteLine(TxString);
-        //}
-
-        // The following code is used to manage the capture routine
-
-        // Type definition of capture related variables
-
-
+        // unsigned char data = (unsigned char)(Serial.read());
+        
         bool unmanaged = false;                              // Unmanaged capture Flag
         bool OnCapture = false;
         bool onMove = false;
@@ -1043,6 +945,20 @@ namespace Microscope_Control
 
         private void StartBtn_Click(object sender, EventArgs e)
         {
+            foreach (Control item in this.Controls)
+            {
+                if (item is Button)
+                {
+                    if (((Button)item).Text.ToCharArray().FirstOrDefault() == 'B')
+                        ((Button)item).Enabled = false;
+                }
+                if (item is Label)
+                {
+                    if (((Label)item).Text.ToCharArray().FirstOrDefault() == 'B')
+                        ((Label)item).Enabled = false;
+                }
+            }
+
             BSaveBtn.Enabled = false;
             BStepMinBtn.Enabled = false;
             BStepMaxBtn.Enabled = false;
@@ -1051,7 +967,6 @@ namespace Microscope_Control
             BCycle2Btn.Enabled = false;
             BCycleSetBtn.Enabled = false;
             BShutterBtn.Enabled = false;
-            StartBtn.Enabled = false;
             BStepMax1Btn.Enabled = false;
             BStepMax2Btn.Enabled = false;
             //BSpeedTB.Enabled = false;
@@ -1153,7 +1068,7 @@ namespace Microscope_Control
             }
             Thread.Sleep(500);
             TakePictue();
-            
+
             if (myFrame == TotalFrames)
             {
                 onMove = true;
@@ -1187,7 +1102,7 @@ namespace Microscope_Control
                 {
                     LiveviewTmr.Interval = 3;
                     Busy = true;
-                    MoveStage(Convert.ToInt32(BStepTxt.Text)*TotalFrames, 'S');
+                    MoveStage(Convert.ToInt32(BStepTxt.Text) * TotalFrames, 'S');
                     onMove = false;
                     onSave = false;
                     myImg += 1;
