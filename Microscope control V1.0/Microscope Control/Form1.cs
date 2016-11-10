@@ -32,6 +32,7 @@ using System.Drawing;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
+using System.Media;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -915,21 +916,7 @@ namespace Microscope_Control
             BStateLbl.Text = ("Moving...");
             serialPort1.Write(sendthis, 0, 7);
             ;
-            //*************************
-            //Pos = steps;
-            //string posAux = Convert.ToString(Pos, 2);
-            //int lendif = 21 - posAux.Length;
-            //for (i = 0; i < lendif; i++)
-            //    posAux = '0' + posAux;
-            //pos3 = new byte[] { Convert.ToByte(posAux.Substring(0, 7), 2) };
-            //pos2 = new byte[] { Convert.ToByte(posAux.Substring(7, 7), 2) };
-            //pos1 = new byte[] { Convert.ToByte(posAux.Substring(14, 7), 2) };
-            ////TxString = ("@" + Encoding.ASCII.GetString(session) + "P" + Encoding.ASCII.GetString(pos1) + Encoding.ASCII.GetString(pos2) + Encoding.ASCII.GetString(pos3));
-            //TxString = ("@" + Encoding.ASCII.GetString(session) + inst + Encoding.ASCII.GetString(pos1) + Encoding.ASCII.GetString(pos2) + Encoding.ASCII.GetString(pos3));
-            //BStateLbl.Text = ("Moving...");
-            //serialPort1.WriteLine(TxString);
         }
-        // unsigned char data = (unsigned char)(Serial.read());
         
         bool unmanaged = false;                              // Unmanaged capture Flag
         bool OnCapture = false;
@@ -947,19 +934,19 @@ namespace Microscope_Control
 
         private void StartBtn_Click(object sender, EventArgs e)
         {
-            foreach (Control item in this.Controls)
-            {
-                if (item is Button)
-                {
-                    if (((Button)item).Text.ToCharArray().FirstOrDefault() == 'B')
-                        ((Button)item).Enabled = false;
-                }
-                if (item is Label)
-                {
-                    if (((Label)item).Text.ToCharArray().FirstOrDefault() == 'B')
-                        ((Label)item).Enabled = false;
-                }
-            }
+            //foreach (Control item in this.Controls)
+            //{
+            //    if (item is Button)
+            //    {
+            //        if (((Button)item).Text.ToCharArray().FirstOrDefault() == 'B')
+            //            ((Button)item).Enabled = false;
+            //    }
+            //    if (item is Label)
+            //    {
+            //        if (((Label)item).Text.ToCharArray().FirstOrDefault() == 'B')
+            //            ((Label)item).Enabled = false;
+            //    }
+            //}
 
             BSaveBtn.Enabled = false;
             BStepMinBtn.Enabled = false;
@@ -1098,7 +1085,14 @@ namespace Microscope_Control
                     myFrame += 1;
                     onMove = false;
                     onSave = false;
-                    StartCapture();
+                    if (unmanaged)
+                    {
+                        StartCapture();
+                    }
+                    else
+                    {
+                        OnCapture = false;
+                    }
                 }
                 else
                 {
@@ -1107,6 +1101,8 @@ namespace Microscope_Control
                     MoveStage(Convert.ToInt32(BStepTxt.Text) * TotalFrames, 'S');
                     onMove = false;
                     onSave = false;
+                    OnCapture = false;
+                    captureBtn.Enabled = false;
                     myImg += 1;
                     myFrame = 0;
                 }
@@ -1114,9 +1110,18 @@ namespace Microscope_Control
         }
 
         private void IntervalTmr_Tick(object sender, EventArgs e)
-        {
+        {            
             IntervalTmr.Enabled = false;
-            StartCapture();
+            if (!unmanaged)
+            {
+                captureBtn.Enabled = true;
+                SystemSounds.Beep.Play();
+            }
+            else
+            {
+                StartCapture();
+                OnCapture = true;
+            }
         }
     }
 

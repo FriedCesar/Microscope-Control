@@ -279,94 +279,47 @@ void CalibrationHandler()
   rxData += char(rxByte);
   switch (rxByte)
   {
-        case 'P':
-          delay(2);
-          rxByte = Serial.read();
-          posL = rxByte;
-          delay(2);
-          rxByte = Serial.read();
-          posH = rxByte;
-          delay(2);
-          rxPos = posL + (posH * 256);
-          //***********
-          Pos = (rxPos - lPos) * (sign);
-          if (Pos < 0)
-          {
-            digitalWrite(dir, LOW);
-          }
-          else
-          {
-            digitalWrite(dir, HIGH);
-          }
-          //delay(1);
-          Blink(ST, abs(Pos)*stepMult);
-    
-          /*Serial.write("Moving: ");           //Monitor rutine
-            Serial.print(Pos);
-            Serial.write(" steps\n");
-            if (!errorFlag)
-            Serial.write("Session OK!!");
-            Serial.write("Expected: ");
-            Serial.write(sessionB);               //character
-            Serial.write(" Received: ");
-            Serial.print(sessionRx); */           //number
-          lPos    = rxPos;
-          //rxPos   = 0;
-          //Pos     = 0;
-          rxData  = "";
-          //sign    = 1;
-          //delay(1);
-          Serial.print("@");
-          Serial.write(sessionRx);
-          Serial.print("MF");
-          break;
-    //****************************
-//    case 'P':
-//      //delay(1);
-//      rxByte = Serial.read();
-//      rxData += char(rxByte);
-//      pos1 = int(rxByte);
-//      //delay(1);
-//      rxByte = Serial.read();
-//      rxData += char(rxByte);
-//      pos2 = int(rxByte);
-//      //delay(1);
-//      rxByte = Serial.read();
-//      rxData += char(rxByte);
-//      pos3 = int(rxByte);
-//      rxPos = pos1 + (pos2 * 128) + (pos3 * 128 * 128);
-//      //***********
-//      Pos = (rxPos - lPos) * (sign);
-//      if (Pos < 0)
-//      {
-//        digitalWrite(dir, LOW);
-//      }
-//      else
-//      {
-//        digitalWrite(dir, HIGH);
-//      }
-//      //delay(1);
-//      Blink(ST, abs(Pos)*stepMult);
-//
-//      /*Serial.write("Moving: ");           //Monitor rutine
-//        Serial.print(Pos);
-//        Serial.write(" steps\n");
-//        if (!errorFlag)
-//        Serial.write("Session OK!!");
-//        Serial.write("Expected: ");
-//        Serial.write(sessionB);               //character
-//        Serial.write(" Received: ");
-//        Serial.print(sessionRx); */           //number
-//      lPos    = rxPos;
-//      //rxPos   = 0;
-//      //Pos     = 0;
-//      rxData  = "";
-//      //sign    = 1;
-//      //delay(1);
-//      Serial.print("@");
-//      Serial.write(sessionRx);
-//      Serial.print("MF");
-//      break;
+    case 'P':
+      //delay(2);
+      rxByte = Serial.read();
+      posL = rxByte;
+      //delay(2);
+      rxByte = Serial.read();
+      posH = rxByte;
+      //delay(2);
+      rxPos = posL + (posH * 256);
+      //***********
+      Pos = (rxPos - lPos) * (sign);
+      if (Pos < 0)
+      {
+        digitalWrite(dir, LOW);
+      }
+      else
+      {
+        digitalWrite(dir, HIGH);
+      }
+      //delay(1);
+      Blink(ST, abs(Pos)*stepMult);
+
+      /*Serial.write("Moving: ");           //Monitor rutine
+        Serial.print(Pos);
+        Serial.write(" steps\n");
+        if (!errorFlag)
+        Serial.write("Session OK!!");
+        Serial.write("Expected: ");
+        Serial.write(sessionB);               //character
+        Serial.write(" Received: ");
+        Serial.print(sessionRx); */           //number
+      lPos    = rxPos;
+      //rxPos   = 0;
+      //Pos     = 0;
+      rxData  = "";
+      //sign    = 1;
+      //delay(1);
+      Serial.print("@");
+      Serial.write(sessionRx);
+      Serial.print("MF");
+      break;
     case 'I':
       delay(10);
       Serial.print("@");
