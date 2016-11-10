@@ -524,6 +524,7 @@ namespace Microscope_Control
         private void BStepTB_Scroll(object sender, EventArgs e)
         {
             PosRef = BStepTB.Value;                                                           // Almacena la posición de usuario del trackBar, esta es la referencia para verificar el movimiento de la plataforma
+            ;
             if (!Busy)                                                                          // Envía el dato de posición en tiempo de ejecución si la bandera Busy está inactiva
             {
                 Busy = true;
@@ -907,25 +908,26 @@ namespace Microscope_Control
 
         private void MoveStage(int steps, char inst)
         {
-            //BStepTBLbl.Text = ("Step: " + PosRef);
-            //Pos = BStepTB.Value;
-            //string posAux = Convert.ToString(Pos, 2);
-            //******************
-            //string Pos = Bitconverter.GetBytes(steps);
-            //TxString = ("@"+ Encoding.ASCII.GetString(session)+inst);
-            //TxString = TxString + pos[0]+""+pos[1]+""+pos[2]
             Pos = steps;
-            string posAux = Convert.ToString(Pos, 2);
-            int lendif = 21 - posAux.Length;
-            for (i = 0; i < lendif; i++)
-                posAux = '0' + posAux;
-            pos3 = new byte[] { Convert.ToByte(posAux.Substring(0, 7), 2) };
-            pos2 = new byte[] { Convert.ToByte(posAux.Substring(7, 7), 2) };
-            pos1 = new byte[] { Convert.ToByte(posAux.Substring(14, 7), 2) };
-            //TxString = ("@" + Encoding.ASCII.GetString(session) + "P" + Encoding.ASCII.GetString(pos1) + Encoding.ASCII.GetString(pos2) + Encoding.ASCII.GetString(pos3));
-            TxString = ("@" + Encoding.ASCII.GetString(session) + inst + Encoding.ASCII.GetString(pos1) + Encoding.ASCII.GetString(pos2) + Encoding.ASCII.GetString(pos3));
+            byte[] bytePos = BitConverter.GetBytes(steps);
+            byte instruction = Convert.ToByte(inst);
+            byte[] sendthis = new byte[] { 64, session[0], Convert.ToByte(inst), bytePos[0], bytePos[1], 0x0A, 0X0A };
             BStateLbl.Text = ("Moving...");
-            serialPort1.WriteLine(TxString);
+            serialPort1.Write(sendthis, 0, 7);
+            ;
+            //*************************
+            //Pos = steps;
+            //string posAux = Convert.ToString(Pos, 2);
+            //int lendif = 21 - posAux.Length;
+            //for (i = 0; i < lendif; i++)
+            //    posAux = '0' + posAux;
+            //pos3 = new byte[] { Convert.ToByte(posAux.Substring(0, 7), 2) };
+            //pos2 = new byte[] { Convert.ToByte(posAux.Substring(7, 7), 2) };
+            //pos1 = new byte[] { Convert.ToByte(posAux.Substring(14, 7), 2) };
+            ////TxString = ("@" + Encoding.ASCII.GetString(session) + "P" + Encoding.ASCII.GetString(pos1) + Encoding.ASCII.GetString(pos2) + Encoding.ASCII.GetString(pos3));
+            //TxString = ("@" + Encoding.ASCII.GetString(session) + inst + Encoding.ASCII.GetString(pos1) + Encoding.ASCII.GetString(pos2) + Encoding.ASCII.GetString(pos3));
+            //BStateLbl.Text = ("Moving...");
+            //serialPort1.WriteLine(TxString);
         }
         // unsigned char data = (unsigned char)(Serial.read());
         
