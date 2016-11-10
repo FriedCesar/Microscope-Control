@@ -468,8 +468,8 @@ void CalibrationHandler()
       Serial.write(sessionRx);
       Serial.print("VF");
       break;
-      default:
-      
+    default:
+      break;
 
   }
 }
