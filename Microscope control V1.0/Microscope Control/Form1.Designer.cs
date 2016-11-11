@@ -79,6 +79,8 @@
             this.ManageChkBtn = new System.Windows.Forms.CheckBox();
             this.captureBtn = new System.Windows.Forms.Button();
             this.IntervalTmr = new System.Windows.Forms.Timer(this.components);
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.ShutterBW = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.ImgLiveview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImgGuide)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ImgAux)).BeginInit();
@@ -356,7 +358,7 @@
             // 
             this.BTimeLbl.AutoSize = true;
             this.BTimeLbl.Enabled = false;
-            this.BTimeLbl.Location = new System.Drawing.Point(937, 293);
+            this.BTimeLbl.Location = new System.Drawing.Point(934, 352);
             this.BTimeLbl.Name = "BTimeLbl";
             this.BTimeLbl.Size = new System.Drawing.Size(30, 13);
             this.BTimeLbl.TabIndex = 50;
@@ -386,7 +388,7 @@
             // 
             this.BCycleLbl.AutoSize = true;
             this.BCycleLbl.Enabled = false;
-            this.BCycleLbl.Location = new System.Drawing.Point(937, 352);
+            this.BCycleLbl.Location = new System.Drawing.Point(934, 324);
             this.BCycleLbl.Name = "BCycleLbl";
             this.BCycleLbl.Size = new System.Drawing.Size(33, 13);
             this.BCycleLbl.TabIndex = 49;
@@ -408,7 +410,7 @@
             // 
             this.BStepLbl.AutoSize = true;
             this.BStepLbl.Enabled = false;
-            this.BStepLbl.Location = new System.Drawing.Point(937, 323);
+            this.BStepLbl.Location = new System.Drawing.Point(934, 296);
             this.BStepLbl.Name = "BStepLbl";
             this.BStepLbl.Size = new System.Drawing.Size(29, 13);
             this.BStepLbl.TabIndex = 48;
@@ -594,6 +596,22 @@
             // 
             this.IntervalTmr.Tick += new System.EventHandler(this.IntervalTmr_Tick);
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.WorkerReportsProgress = true;
+            this.backgroundWorker1.WorkerSupportsCancellation = true;
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // ShutterBW
+            // 
+            this.ShutterBW.WorkerReportsProgress = true;
+            this.ShutterBW.WorkerSupportsCancellation = true;
+            this.ShutterBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ShutterBW_DoWork);
+            this.ShutterBW.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.ShutterBW_ProgressChanged);
+            this.ShutterBW.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.ShutterBW_RunWorkerCompleted);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -712,6 +730,8 @@
         private System.Windows.Forms.CheckBox ManageChkBtn;
         private System.Windows.Forms.Button captureBtn;
         private System.Windows.Forms.Timer IntervalTmr;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.ComponentModel.BackgroundWorker ShutterBW;
     }
 }
 
