@@ -80,7 +80,6 @@ namespace Microscope_Control
         int imgSize = 0;                            // Image size for data retrieval (Liveview)
         int frameNo = 0;                            // Frame No. (Liveview)
         int paddingSize = 0;                        // Padding size (Liveview)
-        int conTO = 0;                                      // Timeout connection by attempts
         bool FlagLvw = false;                       // Flag to retrieve action on liveview event                   
         bool CamConStatus = false;                  // Camera connection flag
         byte[] buffer = new byte[520];              // Data buffer for liveview
@@ -95,7 +94,6 @@ namespace Microscope_Control
             {
                 ConnectionTxt.Visible = true;
                 ConnectBtn.Enabled = false;
-                conTO = 0;
                 //Thread.Sleep(200);
 
                 // Setup Client/Host Endpoints and communication socket
@@ -114,7 +112,7 @@ namespace Microscope_Control
                 // Receives discovery response from camera UNICAST
                 byte[] ReceiveBuffer = new byte[64000];
                 int ReceivedBytes = 0;
-                while (conTO<1000)                                                                                            // Received Buffered response
+                while (true)                                                                                            // Received Buffered response
                 {
                     if (UdpSocket.Available > 0)
                     {
@@ -124,13 +122,9 @@ namespace Microscope_Control
                         {
                             ConnectionTxt.AppendText(Encoding.UTF8.GetString(ReceiveBuffer, 0, ReceivedBytes));
                         }
-                        CamConStatus = true; 
                         break;
                     }
-                    conTO += 1;
                 }
-
-
                 ConnectionTxt.AppendText("Connection successful =)  \r\n");
 
                 // Loads transparent logo to guide image (Done here to serve as a sleep function)
@@ -154,6 +148,7 @@ namespace Microscope_Control
                 ConnectionTxt.Visible = false;
                 ConnectionTxt.Text = "";
                 LiveviewBtn.Enabled = true;
+                CamConStatus = true;
                 CamResponse = SendRequest("setPostviewImageSize", "\"Original\"");
                 CamResponse = SendRequest("actZoom", "\"in\",\"start\"");
                 getEventTxt.Text = CamResponse;
@@ -441,6 +436,7 @@ namespace Microscope_Control
         bool Busy = false;                                  // Activity monitoring flag
         string TxString;                                    // Data transmision string (Send this)
         string RxString;                                    // Data received string
+        int conTO = 0;                                      // Timeout connection by attempts
         int Pos = 0;                                        // Position verifier
         int PosRef = 0;                                     // Position reference
         int Cycle = 0;                                      // Cycle verifier
@@ -795,20 +791,6 @@ namespace Microscope_Control
             ConSuc = false;
             PortSel = false;
 
-            //foreach (Control item in this.Controls)
-            //{
-            //    if (item is Button)
-            //    {
-            //        if (((Button)item).Text.ToCharArray().FirstOrDefault() == 'B')
-            //            ((Button)item).Enabled = false;
-            //    }
-            //    if (item is Label)
-            //    {
-            //        if (((Label)item).Text.ToCharArray().FirstOrDefault() == 'B')
-            //            ((Label)item).Enabled = false;
-            //    }
-            //}
-
             BSpeedTB.Value = 6;                             // Manages form layout (Disable microscope control buttons) TODO: Find a more ellegant way to do this
             BStepTB.Value = 0;
             BSaveBtn.Enabled = false;
@@ -952,6 +934,20 @@ namespace Microscope_Control
 
         private void StartBtn_Click(object sender, EventArgs e)
         {
+            //foreach (Control item in this.Controls)
+            //{
+            //    if (item is Button)
+            //    {
+            //        if (((Button)item).Text.ToCharArray().FirstOrDefault() == 'B')
+            //            ((Button)item).Enabled = false;
+            //    }
+            //    if (item is Label)
+            //    {
+            //        if (((Label)item).Text.ToCharArray().FirstOrDefault() == 'B')
+            //            ((Label)item).Enabled = false;
+            //    }
+            //}
+
             BSaveBtn.Enabled = false;
             BStepMinBtn.Enabled = false;
             BStepMaxBtn.Enabled = false;
